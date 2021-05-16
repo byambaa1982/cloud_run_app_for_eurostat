@@ -8,6 +8,7 @@ from flask import flash, url_for
 
 app = Flask(__name__)
 
+client = storage.Client()
 bucket_name='getting-termites-tweet'
 bucket = client.get_bucket(bucket_name)
 
