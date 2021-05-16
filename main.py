@@ -32,30 +32,21 @@ def get_size(bucket_name='getting-termites-tweet'):
         data.append(mydic)
     return jsonify(data)
 
-@app.route('/heads')
-def get_eurostat_data(request):
-
-  #------ Get Search word here---
-  request_json = request.get_json() 
-  request_args = request.args 
-  key_word = "" 
-
-  if request_json and 'key_word' in request_json: 
-    key_word = request_json['key_word'] 
-  elif request_args and 'key_word' in request_args: 
-    key_word = request_args['key_word']
-  code=key_word
-  print(code)
-  #--------------------------------
-  try:
-    df = eurostat.get_data_df(code)
-    print('code:{} columns:{} rows:{}'.format(code, df.shape[1], df.shape[0]))
-  except: 
-    df='{} not found in the Eurostat server'.format(code)
-    print('{} not found in the Eurostat server'.format(code))
-
-
-  return jsonify(df.head)
+@app.route('/unemployment')
+def get_eurostat_data():
+	code='unemployment'
+	#--------------------------------
+	try:
+		toc_df = eurostat.get_toc_df()
+		df = eurostat.subset_toc_df(toc_df, 'unemployment')
+		# df = eurostat.get_data_df(code)
+		print('code:{} columns:{} rows:{}'.format(code, df.shape[1], df.shape[0]))
+		data=df.shape[0]
+	except: 
+		df='{} not found in the Eurostat server'.format(code)
+		print('{} not found in the Eurostat server'.format(code))
+		return jsonify(df)
+	return jsonify(data)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
