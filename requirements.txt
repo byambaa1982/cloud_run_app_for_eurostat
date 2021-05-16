@@ -28,3 +28,4 @@ Werkzeug==0.16.0
 gunicorn
 pandas
 eurostat
+avro
