@@ -61,6 +61,30 @@ def get_eurostat_data():
 		return jsonify(df)
 	return jsonify(data)
 
+@app.route('/get_data', methods = ['GET', 'POST'])
+def get_data():
+	request_json = request.get_json() 
+	request_args = request.args 
+	key_word = "" 
+
+	if request_json and 'key_word' in request_json: 
+		key_word = request_json['key_word'] 
+	elif request_args and 'key_word' in request_args: 
+		key_word = request_args['key_word']
+		print(key_word)
+		code=key_word
+	#--------------------------------
+	try:
+		df = eurostat.get_data_df(code)
+		print('code:{} columns:{} rows:{}'.format(code, df.shape[1], df.shape[0]))
+		data=df.iloc[0:5,0:6]
+	except: 
+		df='{} not found in the Eurostat server'.format(code)
+		print('{} not found in the Eurostat server'.format(code))
+		return jsonify(df)
+	return jsonify(data)
+
+
 @app.route('/avro', methods = ['GET', 'POST'])
 def check_and_trans_by_http():
 	#------ storage link here---
