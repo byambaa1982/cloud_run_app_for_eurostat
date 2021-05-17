@@ -113,7 +113,7 @@ def check_and_trans_by_http():
 			df = pd.DataFrame.from_records(records)
 			print('url is {}'.format(myurl))
 			print('chunk shape is {}'.format(df.shape))
-			date_until=datetime.today().strftime('%Y-%m-%d')
+			date_until=datetime.today().strftime('%Y-%m-%d-%m-%s')
 			filename=('test_v7_{}.csv'.format(date_until))
 			print(filename)
 			f = StringIO()
@@ -136,7 +136,7 @@ def check_and_trans_by_http():
 		return jsonify(data)
 
 @app.route('/multiavro', methods = ['GET', 'POST'])
-def check_and_trans_by_http():
+def check_multi_avros_by_http():
 	#------ storage link here---
 	try:
 		request_json = request.get_json() 
@@ -164,7 +164,7 @@ def check_and_trans_by_http():
 				df = pd.DataFrame.from_records(records)
 				print('url is {}'.format(myurl))
 				print('chunk shape is {}'.format(df.shape))
-				date_until=datetime.today().strftime('%Y-%m-%d')
+				date_until=datetime.today().strftime('%Y-%m-%d-%m-%s')
 				filename=('test_v7_{}.csv'.format(date_until))
 				print(filename)
 				f = StringIO()
