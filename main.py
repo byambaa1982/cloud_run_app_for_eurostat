@@ -18,7 +18,7 @@ from avro.io import DatumReader, DatumWriter
 app = Flask(__name__)
 
 client = storage.Client()
-bucket_name='getting-termites-tweet'
+bucket_name='momat_qr_code'
 bucket = client.get_bucket(bucket_name)
 
 @app.route("/")
@@ -27,7 +27,7 @@ def hello_world():
     return "Hello {}!".format(name)
 
 @app.route('/sizes')
-def get_size(bucket_name='getting-termites-tweet'):
+def get_size(bucket_name='momat_qr_code'):
     data=[]
     for blob in client.list_blobs(bucket_name): 
         data_size=('{:.1f}'.format(blob.size/1000))
@@ -102,7 +102,7 @@ def check_and_trans_by_http():
 		client = storage.Client()
 		#please change the file's URI
 		myurl=str(fname)
-		bucket=client.get_bucket('getting-termites-tweet')
+		bucket=client.get_bucket('momat_qr_code')
 		if '.avro' in myurl:
 			# blob=bucket.blob(my_file)
 			blob=bucket.blob(fname)
@@ -153,7 +153,8 @@ def check_multi_avros_by_http():
 		#please change the file's URI
 		for fname in fnames:
 			myurl=str(fname)
-			bucket=client.get_bucket('getting-termites-tweet')
+			print(myurl)
+			bucket=client.get_bucket('momat_qr_code')
 			if '.avro' in myurl:
 				# blob=bucket.blob(my_file)
 				blob=bucket.blob(fname)
@@ -181,7 +182,7 @@ def check_multi_avros_by_http():
 				print('uploaded storage')
 			else: 
 				print('no avro file found')
-			return f'check the results in the logs'
+		return f'check the results in the logs'
 	except:
 		data="something wrong, nothin happend"
 		return jsonify(data)
