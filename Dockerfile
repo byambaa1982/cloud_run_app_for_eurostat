@@ -2,7 +2,7 @@
 # https://hub.docker.com/_/python
 FROM python:3.7-slim
 
-ENV BUCKET_NAME staging.twittersheet-275317.appspot.com
+ENV BUCKET_NAME us.artifacts.long-star-338118.appspot.com
 # Copy local code to the container image.
 
 COPY . /
