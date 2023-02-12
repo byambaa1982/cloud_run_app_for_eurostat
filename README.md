@@ -1,24 +1,33 @@
-# Setup:
+## Flask API
+The code is a Flask API that provides a number of endpoints for various functionalities. It includes the following functionalities:
 
-Run the following to create a serviceAccount that will be the background, download its key, create a bucket, allow the proper access to the service account, and set an open CORS policy.
+Retrieving the size of files in a Google Cloud Storage bucket
+Retrieving the data from Eurostat API
+Transforming an Avro file to a CSV file and uploading it to Google Cloud Storage
+Transforming multiple Avro files to multiple CSV files and uploading them to Google Cloud Storage
+Hello World endpoint
+### Dependencies
+The code uses the following libraries:
 
-```shell
-PROJECT_NAME=$(gcloud config list --format="value(core.project)")
-gcloud iam service-accounts create urlsigner --display-name="GCS URL Signer" --project=${PROJECT_NAME}
-gcloud iam service-accounts keys  create service_account.json --iam-account=urlsigner@${PROJECT_NAME}.iam.gserviceaccount.com
-gsutil mb gs://$PROJECT_NAME-urlsigner
-gsutil iam ch  serviceAccount:urlsigner@${PROJECT_NAME}.iam.gserviceaccount.com:roles/storage.admin gs://$PROJECT_NAME-urlsigner
-gsutil cors set cors.txt gs://$PROJECT_NAME-urlsigner
-```
+Flask: For creating the API
+Google Cloud Storage: For accessing and manipulating files stored in Google Cloud Storage
+Eurostat: A Python wrapper for the Eurostat API
+Pandas: For data manipulation and transformation
+Avro: For reading and writing Avro files
+os: For interacting with the operating system
+Calendar: For formatting dates
+Endpoints
+The API has the following endpoints:
 
-Next, build the Docker image and push to GCR:
+/: A Hello World endpoint
+/sizes: An endpoint that returns the size of files in a Google Cloud Storage bucket
+/unemployment: An endpoint that retrieves data from the Eurostat API based on a keyword passed as a query parameter or in the request body
+/get_data: An endpoint that retrieves data from the Eurostat API and returns a subset of the data as a JSON object
+/avro: An endpoint that accepts a keyword as a query parameter or in the request body, retrieves an Avro file from Google Cloud Storage with that name, transforms it to a CSV file, and uploads the CSV file to Google Cloud Storage
+/multiavro: An endpoint that accepts a list of keywords as a query parameter or in the request body, retrieves Avro files from Google Cloud Storage with those names, transforms each file to a CSV file, and uploads each CSV file to Google Cloud Storage
+How to run the API
+To run the API, you need to have Python and the required libraries installed. You also need to have the appropriate credentials to access Google Cloud Storage. Once you have everything set up, you can run the API by executing the following command in the terminal:
 
-```shell
-docker build -t gcr.io/$PROJECT_NAME/uploader . && docker push gcr.io/$PROJECT_NAME/uploader:latest
-```
-
-Lastly, submit it to Cloud Run:
-
-```shell
-gcloud beta run deploy uploader --image gcr.io/$PROJECT_NAME/uploader:latest
-```
+Copy code
+```python app.py```
+The API will be available at http://0.0.0.0:8080/.
